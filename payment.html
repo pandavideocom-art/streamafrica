@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>STREAM Payment Gateway</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light only"> 
+    <meta name="description" content="Complete your STREAM registration payment.">
+    
+    <!-- Meta Tags -->
+    <meta property="og:site_name" content="STREAM">
+    <meta property="og:title" content="STREAM Payment">
+    <meta property="og:description" content="Complete your STREAM registration payment.">
+    <link rel="canonical" href="https://yourstreamsite.com/payment">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS Reset & Variables --- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
+        body { line-height: 1.5; -webkit-text-size-adjust: 100%; }
+        a { text-decoration: none; color: inherit; }
+        
+        :root {
+            --bg-light: #f0f0f0; 
+            --card-bg-light: #ffffff; 
+            --card-bg-alt: #fff3f3; 
+            --primary-red: #ff0000; 
+            --accent-orange: #0f172a; 
+            --text-dark: #fdf2f2; 
+            --text-secondary-dark: #080808; 
+            --button-gradient-start: #ff4500; 
+            --button-gradient-end: #0f172a;   
+            --font-family: 'Poppins', sans-serif;
+            --notification-bg: #d9534f; 
+            --border-light: #e0e0e0;
+            --link-color: #007bff; 
+            --placeholder-color: rgba(51, 51, 51, 0.55); 
+
+            /* Specific colors for Secure Payment Portal */
+            --portal-bg: #0f172a; 
+            --portal-title-color: #FFD700; 
+            --timer-color: #FF0000; 
+            --portal-text-color: #F0F0F0; 
+        }
+
+        /* --- Body and Layout --- */
+        body {
+            background-color: var(--bg-light);
+            font-family: var(--font-family);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.25rem; 
+        }
+        .lock-icon { color: var(--primary-red); margin-bottom: 0.5rem; }
+        .lock-icon svg { width: 32px; height: 32px; }
+        .info-box { width: 100%; padding: 1.5rem; border-radius: 16px; text-align: center; font-size: 1rem; line-height: 1.6; font-weight: 600; }
+        .info-box.yellow { background-color: var(--accent-orange); color: var(--text-dark); box-shadow: 0 4px 10px rgba(255, 165, 0, 0.2); }
+        
+        .main-payment-card {
+            background-color: var(--card-bg-light); 
+            border: 1px solid var(--border-light); 
+            border-radius: 16px; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+            padding: 1.5rem; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; 
+        }
+
+        .account-box { 
+            width: 100%; padding: 1.75rem 1.5rem; border-radius: 16px; 
+            display: flex; flex-direction: column; align-items: center; 
+            gap: 0.75rem; color: var(--text-dark); border: 1px solid var(--border-light); 
+            background-color: var(--card-bg-light); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
+            transition: opacity 0.5s ease, transform 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease;
+        }
+        .account-box.hidden {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            transform: translateY(20px);
+        }
+        
+        .account-box .merchant-title { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+        .account-box .bank-name { font-size: 1.1rem; font-weight: 600; color: var(--primary-red); }
+        .account-box .account-number-wrapper { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: background-color 0.2s ease; }
+        .account-box .account-number-wrapper:hover { background-color: rgba(255, 0, 0, 0.05); }
+        .account-box .account-number { font-size: 1.75rem; font-weight: 700; letter-spacing: 2px; color: var(--accent-orange); }
+        .account-box .copy-icon svg { width: 24px; height: 24px; fill: var(--text-secondary-dark); opacity: 0.8; }
+        .account-box .account-name { font-size: 1rem; font-weight: 600; color: var(--text-secondary-dark); }
+        .instruction-text { 
+            font-size: 0.95rem; color: var(--text-secondary-dark); 
+            text-align: center; 
+            transition: opacity 0.5s ease, transform 0.5s ease, height 0.5s ease, margin 0.5s ease;
+        }
+        .instruction-text.hidden {
+             opacity: 0;
+             height: 0;
+             margin: 0;
+             overflow: hidden;
+             transform: translateY(10px);
+        }
+        .verify-button {
+            width: 100%; padding: 1rem; border: none; border-radius: 12px;
+            background: linear-gradient(90deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: var(--card-bg-light); font-size: 1.1rem; font-weight: 600; text-align: center;
+            cursor: pointer; transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            margin-top: 1.25rem; 
+        }
+        .verify-button:hover { background: linear-gradient(90deg, #ff6f26, #e60000); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4); }
+        .verify-button:active { transform: scale(0.98); box-shadow: 0 2px 10px rgba(255, 0, 0, 0.2); }
+        .verify-button.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+            filter: grayscale(1);
+        }
+        
+        /* --- Copy Notification --- */
+        #copy-notification { 
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); 
+            background-color: #3a2d5c; 
+            color: var(--card-bg-light); 
+            padding: 0.75rem 1.5rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 500; 
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; 
+            z-index: 1000; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
+        }
+        #copy-notification.show { opacity: 1; visibility: visible; }
+
+       /* --- SOCIAL PROOF NOTIFICATION STYLES --- */
+#socialProofNotification {
+    position: fixed;
+    top: 50%;       /* vertically center */
+    right: 20px;    /* stay on the right */
+    background-color: var(--card-bg-light); 
+    border-radius: 8px;
+    padding: 12px 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%) translateY(-50%) scale(0.9); /* slide from right and center */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 1500; 
+    border-left: 4px solid var(--accent-orange); 
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-secondary-dark); 
+    max-width: 280px; 
+    text-align: left;
+}
+#socialProofNotification.show { 
+    opacity: 1; 
+    transform: translateX(0) translateY(-50%) scale(1); 
+    visibility: visible; 
+}
+#socialProofNotification.hide { 
+    opacity: 0; 
+    transform: translateX(100%) translateY(-50%) scale(0.9); 
+    visibility: hidden; 
+}
+.social-name { font-weight: 700; color: var(--accent-orange); } 
+.social-plan { font-weight: 600; color: var(--text-dark); } 
+.social-amount { font-weight: 600; color: var(--primary-red); } 
+.social-time { font-size: 0.8em; color: #888; display: block; margin-top: 3px; }
+
+
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; 
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--card-bg-light); 
+            color: var(--text-dark); 
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 90%;
+            width: 450px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); 
+            position: relative;
+            animation: fadeInScale 0.3s ease-out;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            font-size: 28px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-secondary-dark); 
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover {
+            color: var(--primary-red); 
+        }
+
+        .modal-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary-dark); 
+        }
+        .modal-content strong {
+            color: var(--primary-red); 
+            font-weight: 700;
+        }
+        .modal-content .disclaimer-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary-dark); 
+        }
+        .modal-content .verify-button { 
+            margin-top: 20px;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        /* --- SECURE PAYMENT PORTAL STYLES --- */
+        .payment-portal-section {
+            background-color: var(--portal-bg); 
+            padding: 1rem 0.8rem; 
+            border-radius: 10px; 
+            text-align: center;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5); 
+            position: relative;
+            overflow: hidden; 
+            width: 100%;
+        }
+        .payment-portal-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px; 
+            background-color: var(--accent-orange); 
+        }
+        .payment-portal-section h2 {
+            font-size: 1.2rem; 
+            font-weight: 700;
+            color: var(--portal-title-color); 
+            margin-bottom: 0.8rem; 
+        }
+        .payment-portal-section .timer-prompt {
+            font-size: 0.9rem; 
+            font-weight: 600;
+            color: var(--timer-color); 
+            margin-bottom: 0.3rem; 
+        }
+        .payment-portal-section #countdown-timer {
+            font-family: monospace; 
+            font-size: 2rem; 
+            font-weight: 700;
+            color: var(--timer-color); 
+            margin-bottom: 1rem; 
+        }
+        .payment-portal-section .portal-info-text {
+            font-size: 0.85rem; 
+            line-height: 1.4; 
+            color: var(--portal-text-color); 
+        }
+        .timer-expired-text {
+            font-size: 1.5rem; 
+            font-weight: 700;
+            color: var(--timer-color); 
+            margin-bottom: 0.8rem;
+        }
+        .timer-expired-subtext {
+            font-size: 0.85rem; 
+            color: var(--portal-text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Lock Icon -->
+        <div class="lock-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path></svg>
+        </div>
+
+        <!-- Orange Info Box -->
+        <div class="info-box yellow">
+            To activate your STREAM account and unlock earnings features, kindly transfer exactly ₦12,000 to the account below.
+        </div>
+        
+        <!-- Main Payment Content Card -->
+        <div class="main-payment-card">
+            <!-- Secure Payment Portal Section -->
+            <div class="payment-portal-section">
+                <h2>Protected Payment Gateway</h2>
+                <p class="timer-prompt" id="timer-prompt">Complete payment within:</p>
+                <div id="countdown-timer">10:00</div>
+                <p class="portal-info-text">
+                    Your payment is processed securely. <br>
+                    Access will be enabled immediately after confirmation.
+                </p>
+            </div>
+
+            <!-- ACCOUNT DETAILS CONTAINER -->
+            <div id="payment-account-details-group">
+                <!-- ACCOUNT  -->
+                <div class="account-box" id="account1-details">
+                    <p class="merchant-title" style="color: #FFD700; font-weight: 700; text-align: center;">STREAM PAYMENT DESK</p>
+                    <p class="bank-name">OPAY</p>
+                    <div class="account-number-wrapper" data-copy-text="8157188659">
+                        <span class="account-number">8157188659</span>
+                        <span class="copy-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
+                        </span>
+                    </div>
+                    <p class="account-name">GREATSAM IFECHUKWU</p>
+                </div>
+            </div>
+
+            <!-- Instruction Text -->
+            <p class="instruction-text" id="instruction-text">After completing the transfer, tap the button below to submit your proof and finalize activation.</p>
+        </div>
+        
+       <!-- Verification Button -->
+<a href="https://wa.me/2349114318673/?text=Hello%20STREAM%20Support,%20I%20have%20successfully%20completed%20my%20registration%20payment.%20Kindly%20review%20and%20confirm%20my%20payment%20proof%20so%20my%20account%20can%20be%20activated.%20Thank%20you."
+   class="verify-button"
+   id="verify-payment-telegram">
+   I’ve completed my payment
+</a>
+
+    </div>
+
+    <!-- Copy Notification Element -->
+    <div id="copy-notification">Account Number Copied!</div>
+
+    <!-- SOCIAL PROOF NOTIFICATION ELEMENT -->
+   <!--  <div id="socialProofNotification"></div>-->
+
+    <!-- PAYMENT WARNING MODAL -->
+    <div id="warningModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" id="closeModalX">&times;</span>
+            <p><strong>⚠️ PAYMENT NOTICE:</strong></p>
+            <p class="disclaimer-text">
+              Please avoid using OPAY for this transaction, as it may delay confirmation and affect withdrawals.
+              STREAM supports Palmpay, Moniepoint, POS transfers, and all major banks except OPAY.
+            </p>
+            
+            <button id="dismissModalBtn" class="verify-button">Understood</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const redirectUrl = "https://wa.me/2349114318673";
+            
+            // --- Copy Functionality ---
+            const copyWrappers = document.querySelectorAll('.account-number-wrapper');
+            const notification = document.getElementById('copy-notification');
+            let notificationTimer;
+
+            copyWrappers.forEach(wrapper => {
+                wrapper.addEventListener('click', function() {
+                    const textToCopy = this.dataset.copyText;
+                    if (navigator.clipboard && textToCopy) {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            notification.classList.add('show');
+                            clearTimeout(notificationTimer);
+                            notificationTimer = setTimeout(() => {
+                                notification.classList.remove('show');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    }
+                });
+            });
+            
+            // --- Modal Functionality ---
+            const modal = document.getElementById('warningModal');
+            const closeBtnX = document.getElementById('closeModalX'); 
+            const dismissBtn = document.getElementById('dismissModalBtn'); 
+
+            const closeModalHandler = function() {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            if (closeBtnX) closeBtnX.addEventListener('click', closeModalHandler);
+            if (modal) modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModalHandler();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape" && modal.classList.contains('active')) closeModalHandler();
+            });
+            if (dismissBtn) dismissBtn.addEventListener('click', closeModalHandler);
+            
+            // --- Countdown Timer Logic ---
+            const countdownDisplay = document.getElementById('countdown-timer');
+            const timerPrompt = document.getElementById('timer-prompt');
+            const accountDetailsGroup = document.getElementById('payment-account-details-group');
+            const instructionText = document.getElementById('instruction-text');
+            const verifyButton = document.getElementById('verify-payment-button');
+
+            const countdownDuration = 10 * 60;
+            let timeRemaining = countdownDuration;
+            let countdownInterval;
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+            }
+
+            function updateCountdown() {
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.textContent = '00:00';
+                    timerPrompt.innerHTML = '<span class="timer-expired-text">Payment window expired!</span><br><span class="timer-expired-subtext">Please refresh to restart.</span>';
+                    
+                    if (accountDetailsGroup) {
+                        accountDetailsGroup.classList.add('hidden');
+                        setTimeout(() => {
+                           accountDetailsGroup.style.display = 'none'; 
+                        }, 500);
+                    }
+                    if (instructionText) {
+                        instructionText.classList.add('hidden');
+                        setTimeout(() => {
+                           instructionText.style.display = 'none';
+                        }, 500);
+                    }
+                    if (verifyButton) {
+                        verifyButton.classList.add('disabled');
+                        verifyButton.textContent = 'Payment Expired';
+                        verifyButton.href = '#'; 
+                        verifyButton.removeEventListener('click', verifyButtonClickHandler); 
+                        verifyButton.addEventListener('click', (e) => e.preventDefault()); 
+                    }
+                    return;
+                }
+
+                countdownDisplay.textContent = formatTime(timeRemaining);
+                timeRemaining--;
+            }
+
+            updateCountdown(); 
+            countdownInterval = setInterval(updateCountdown, 1000);
+
+            function verifyButtonClickHandler(e) {}
+            if (verifyButton) verifyButton.addEventListener('click', verifyButtonClickHandler);
+
+           // --- Social Proof Logic ---
+const socialProofEl = document.getElementById('socialProofNotification');
+
+function generateSocialProofData(count = 50) {
+    const amountOptions = ["₦12,000", "₦12,000"]; 
+    const planNames = ["STREAM", "STREAM"]; 
+    
+    const regionalData = {
+        igbo: {
+            names: ["Chukwudi","Blessing","Nneka","Ify","Fidelis","Precious","Emeka","Uche","Chiamaka","Obi","Chinedu","Samuel"],
+            cities: ["Enugu","Onitsha","Owerri","Awka","Aba","Port Harcourt"]
+        },
+        yoruba: {
+            names: ["Tunde","Ade","Gbenga","Femi","Kemi","Segun","Wale","Bisi","Olu","Ayoola","Michael","Samuel","Bright","Samson","Sodiq","Quadri","Jumoke","Blessing"],
+            cities: ["Lagos","Ibadan","Abeokuta","Akure","Ogun","Osogbo"]
+        },
+        north: {
+            names: ["Musa","Aisha","Ibrahim","Hassan","Fatima","Usman","Abdullahi","Hajara","Jibril","Yahya"],
+            cities: ["Abuja","Kano","Kaduna","Maiduguri","Jos","Zaria"]
+        },
+        ghana: {
+            names: ["Kwame","Ama","Kofi","Akua","Yaw","Adwoa","Kojo","Yaa","Bright","Blessing","Samuel"],
+            cities: ["Accra","Kumasi","Tamale","Takoradi","Cape Coast","Tema"]
+        },
+        cameroon: {
+            names: ["André","Martine","Pierre","Sophie","Jean","Marie","Franck","Esther"],
+            cities: ["Douala","Yaoundé","Garoua","Bamenda","Maroua"]
+        }
+    };
+
+    const allRegions = Object.keys(regionalData);
+    let messages = [];
+    
+    for (let i = 0; i < count; i++) {
+        const regionKey = allRegions[Math.floor(Math.random() * allRegions.length)];
+        const region = regionalData[regionKey];
+        
+        const randomName = region.names[Math.floor(Math.random() * region.names.length)];
+        const randomCity = region.cities[Math.floor(Math.random() * region.cities.length)];
+        const randomTime = ["just now","2 mins ago","4 mins ago","6 mins ago","9 mins ago","12 mins ago","15 mins ago"][Math.floor(Math.random() * 7)];
+        
+        const randomPlanIndex = Math.floor(Math.random() * planNames.length);
+        const randomPlan = planNames[randomPlanIndex];
+        const randomAmount = amountOptions[randomPlanIndex]; 
+
+        const data = {
+            user: randomName,
+            city: randomCity,
+            plan: randomPlan,
+            amount: randomAmount, 
+            time: randomTime
+        };
+        messages.push(data);
+    }
+    return messages;
+}
+
+let socialProofMessages = generateSocialProofData(50);
+let activeSocialProofTimeout;
+
+function showNextSocialProofNotification() {
+    if (!socialProofEl) return; 
+
+    if (socialProofMessages.length === 0) {
+        socialProofMessages = generateSocialProofData(50);
+    }
+
+    const randomIndex = Math.floor(Math.random() * socialProofMessages.length);
+    const data = socialProofMessages.splice(randomIndex, 1)[0]; 
+    
+    // Smaller popup text
+    const html = `<span class="social-name" style="font-size:0.85rem">${data.user}</span> from <span style="font-size:0.8rem">${data.city}</span> activated <span class="social-plan" style="font-size:0.85rem">${data.plan}</span> - <span class="social-amount" style="font-size:0.85rem">${data.amount}</span> <span class="social-time" style="font-size:0.75rem">• ${data.time}</span>`;
+    
+    socialProofEl.innerHTML = html;
+    
+    socialProofEl.classList.remove('show');
+    socialProofEl.classList.add('hide');
+    
+    clearTimeout(activeSocialProofTimeout); 
+
+    setTimeout(() => {
+        socialProofEl.classList.remove('hide');
+        socialProofEl.classList.add('show');
+    }, 50); 
+
+    // 7 seconds delay
+    activeSocialProofTimeout = setTimeout(showNextSocialProofNotification, 7000);
+}
+
+showNextSocialProofNotification();
+});
+    </script>
+</body>
+</html>

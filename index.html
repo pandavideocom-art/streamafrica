@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STREAM - Earn From Digital Entertainment</title>
+
+<!-- Google Fonts & Bootstrap Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+:root {
+    --bg-dark: #0f1f1c;
+    --bg-light: #f4f7f6;
+    --accent-green: #00c896;
+    --accent-dark: #009f7a;
+    --card-bg: #173f39;
+    --text-light: #f0f0f0;
+    --text-secondary: #b7d0cb;
+    --shadow-light: rgba(0, 0, 0, 0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: var(--text-light); line-height:1.6; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: linear-gradient(135deg, #002e2b, #005147);
+    border-radius: 15px;
+    margin-bottom: 50px;
+}
+.hero h3 { font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; }
+.hero p { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto 30px; }
+.flyer-image { width: 100%; max-width: 700px; height: auto; border-radius: 15px; margin: 20px auto; display:block; box-shadow: 0 8px 20px var(--shadow-light); }
+.btn { display: inline-block; padding: 16px 35px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-align:center; }
+.btn-primary { color: #fff; background: linear-gradient(90deg, var(--accent-green), var(--accent-dark)); box-shadow: 0 4px 12px var(--shadow-light); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 15px var(--shadow-light); }
+.btn-secondary { color: #fff; background: linear-gradient(90deg, #00c896, #007a5c); }
+.btn-secondary:hover { transform: translateY(-2px); }
+
+/* Section Titles */
+h2 { text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 40px; }
+
+/* Plans Section */
+.plans { padding: 60px 20px; background: var(--bg-dark); }
+.plan-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 35px;
+    margin: 20px auto;
+    max-width: 500px;
+    text-align: left;
+    border-left: 5px solid var(--accent-green);
+    box-shadow: 0 6px 20px var(--shadow-light);
+    transition: transform 0.3s ease;
+}
+.plan-card:hover { transform: translateY(-5px); }
+.plan-card h3 { font-size: 1.6rem; border-bottom: 1px dashed var(--accent-green); padding-bottom: 10px; margin-bottom: 20px; }
+.plan-card ul { list-style: none; padding:0; margin:0; }
+.plan-card li { position: relative; font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem; padding-left: 2rem; }
+.plan-card li::before { content: "✓"; position: absolute; left:0; color: var(--accent-green); font-weight: bold; }
+
+/* Flyers Section - grid layout */
+.flyers { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:50px 20px; }
+.flyers img { border-radius: 15px; width:100%; height:auto; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.flyers img:hover { transform: scale(1.05); box-shadow: 0 10px 25px var(--shadow-light); }
+
+/* Final CTA */
+.final-cta { padding: 60px 20px; background: #002e2b; border-radius: 15px; text-align: center; margin:50px 0; }
+.final-cta h2 { font-size: 2rem; margin-bottom:15px; }
+.final-cta p { color: var(--text-secondary); margin-bottom:25px; }
+
+/* Footer */
+footer { text-align:center; padding: 25px 20px; color:#a7cfc6; font-size:0.9rem; }
+
+/* Social Proof Notification */
+#socialProofNotification {
+    position: fixed;
+    bottom: 40px; left: 20px;
+    background: rgba(23,63,57,0.95);
+    border-radius: 10px;
+    padding: 15px 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    font-size: 0.9rem;
+    opacity:0;
+    visibility:hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.5s ease;
+    border-left: 5px solid var(--accent-green);
+    z-index:1500;
+}
+#socialProofNotification.show { opacity:1; visibility:visible; transform: translateY(0) scale(1);}
+.social-name { font-weight:700; color: var(--accent-green); }
+.social-plan { font-weight:600; color: var(--text-secondary); }
+.social-time { font-size:0.8rem; color:#a7cfc6; display:block; margin-top:3px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <h3>Turn Your Time Online Into Real Cash</h3>
+        <p>With STREAM, every click, watch, listen, and download can earn you rewards. Your digital activities now pay off — effortlessly and securely.</p>
+        <img src="/assets/images/CTA.jpg" alt="STREAM earning opportunity" class="flyer-image">
+        <a class='btn btn-primary' href='/onboard'>Start Earning Now</a>
+    </header>
+
+    <!-- Plans Section -->
+    <section class="plans">
+        <h2>How You Earn on STREAM</h2>
+        <div class="plan-card titan">
+            <h3>STREAM Earning System</h3>
+            <ul>
+                <li><i class="bi bi-music-note-beamed"></i> <strong>Audio Collab:</strong> Earn rewards by engaging with official music tracks and sound projects.</li>
+                <li><i class="bi bi-camera-video"></i> <strong>Video Collab:</strong> Get paid for watching, sharing, and promoting verified videos.</li>
+                <li><i class="bi bi-image"></i> <strong>Snap Collab:</strong> Interact with artworks, posters, and visuals to earn real rewards.</li>
+                <li><i class="bi bi-file-earmark-arrow-down"></i> <strong>File Downloads:</strong> Download approved files and digital resources while earning.</li>
+                <li><i class="bi bi-record-circle"></i> <strong>Livestream Collab:</strong> Join live sessions, engage, and get rewarded instantly.</li>
+                <li><i class="bi bi-camera-reels"></i> <strong>TikTok Creators Network:</strong> Monthly earnings for content creators promoting verified content.</li>
+                <li><i class="bi bi-gift"></i> <strong>WishHub:</strong> Convert your STREAM earnings into gifts, vouchers, and real-world rewards.</li>
+                <li><i class="bi bi-bag"></i> <strong>Stream Bazaar:</strong> Sell products, services, and digital items directly inside STREAM.</li>
+                <li><i class="bi bi-mortarboard"></i> <strong>Skill Up:</strong> Learn in-demand digital skills while earning on the platform.</li>
+            </ul>
+            <a class="btn btn-secondary" href="/onboard">Activate Your STREAM Account</a>
+        </div>
+    </section>
+
+    <!-- Flyers Section -->
+    <section class="flyers">
+        <img src="/assets/images/bazaar.jpg" alt="Get paid for uploads">
+        <img src="/assets/images/IMG-20260120-WA0198.jpg" alt="Smart automation for income">
+        <img src="/assets/images/Audio.jpg" alt="STREAM registration benefit">
+        <img src="/assets/images/video.jpg" alt="Connect with global creators">
+        <img src="/assets/images/live.jpg" alt="Get paid for uploads">
+        <img src="/assets/images/file.jpg" alt="Smart automation for income">
+        <img src="/assets/images/snap.jpg" alt="Connect with global creators">
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+        <h2>Join STREAM and Start Earning</h2>
+        <p>Access is limited — secure your spot today</p>
+        <a class='btn btn-primary' href='/onboard'>Join Now</a>
+    </section>
+
+</div>
+
+<footer>
+    <p>2026 STREAM®. All Rights Reserved</p>
+</footer>
+
+<!-- Social Proof -->
+<div id="socialProofNotification" class="hide"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const socialProofEl = document.getElementById('socialProofNotification');
+    const messages = [
+        { user: "Mike", city: "Abuja", plan: "STREAM", amount: "Account Activated", time: "2 mins ago" },
+        { user: "Obinna", city: "Lagos", plan: "STREAM", amount: "Account Activated", time: "5 mins ago" },
+        { user: "Joseph", city: "Port Harcourt", plan: "STREAM", amount: "Account Activated", time: "1 min ago" },
+        { user: "PRECIOUS", city: "Ibadan", plan: "STREAM", amount: "Account Activated", time: "8 mins ago" },
+        { user: "JOY", city: "Abia", plan: "STREAM", amount: "Account Activated", time: "3 mins ago" }
+    ];
+    let activeTimeout;
+    function showNext() {
+        if(socialProofEl.classList.contains('show')){
+            socialProofEl.classList.remove('show'); socialProofEl.classList.add('hide');
+            clearTimeout(activeTimeout);
+            setTimeout(displayNew,500); return;
+        }
+        displayNew();
+    }
+    function displayNew(){
+        const data = messages[Math.floor(Math.random()*messages.length)];
+        socialProofEl.innerHTML = `<span class="social-name">${data.user}</span> from ${data.city} just activated <br>
+        <span class="social-plan">${data.plan}</span> - ${data.amount}
+        <span class="social-time">• ${data.time}</span>`;
+        setTimeout(()=>{ socialProofEl.classList.remove('hide'); socialProofEl.classList.add('show'); },50);
+        activeTimeout = setTimeout(showNext, 5000 + Math.random()*5000);
+    }
+    showNext();
+});
+</script>
+</body>
+</html>

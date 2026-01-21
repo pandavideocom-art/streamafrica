@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STREAM - Create Account</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Minimal CSS Reset --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        body { line-height: 1.5; -webkit-text-size-adjust: 100%; }
+        input, button { font-family: inherit; font-size: inherit; }
+
+        /* --- Root Variables for Theming --- */
+        :root {
+            --bg-page-light: #f2fdfb;
+            --card-bg-white: #ffffff;
+            --logo-green: #00c896;
+            --input-border-light: #d9f2ec;
+            --input-text-dark: #1f2f2b;
+            --placeholder-color: #9fbdb5;
+            --button-gradient-start: #00c896;
+            --button-gradient-end: #009f7a;
+            --button-text-white: #ffffff;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-button: rgba(0, 200, 150, 0.35);
+            
+            --card-max-width: 360px;
+            --card-padding: 30px;
+            --input-height: 48px;
+            --input-border-radius: 8px;
+            --button-height: 52px;
+            --button-border-radius: 10px;
+            --input-spacing: 16px;
+            --logo-margin-bottom: 20px;
+
+            --font-main: 'Poppins', sans-serif;
+            --font-size-base: 16px;
+        }
+
+        html {
+            font-size: var(--font-size-base);
+        }
+
+        /* --- Body and Page Layout --- */
+        body {
+            background-color: var(--bg-page-light);
+            font-family: var(--font-main);
+            color: var(--input-text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* --- Main Content Card --- */
+        .signup-card {
+            background-color: var(--card-bg-white);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px var(--shadow-light);
+            max-width: var(--card-max-width);
+            width: 100%;
+            padding: var(--card-padding);
+            text-align: center;
+        }
+
+        /* --- Logo and Title --- */
+        .logo-section {
+            margin-bottom: var(--logo-margin-bottom);
+        }
+        .logo-section img {
+            max-width: 80px;
+            height: auto;
+            margin: 0 auto 10px auto;
+            display: block;
+        }
+        .logo-section h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--logo-green);
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Form Styling --- */
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--input-spacing);
+        }
+
+        .form-field input {
+            width: 100%;
+            height: var(--input-height);
+            padding: 0 15px;
+            border: 1px solid var(--input-border-light);
+            border-radius: var(--input-border-radius);
+            font-size: 1em;
+            color: var(--input-text-dark);
+            background-color: var(--card-bg-white);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-field input:focus {
+            border-color: var(--button-gradient-start);
+            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.2);
+            outline: none;
+        }
+
+        .form-field input::placeholder {
+            color: var(--placeholder-color);
+            opacity: 1;
+        }
+
+        /* --- Submit Button --- */
+        .submit-button {
+            width: 100%;
+            height: var(--button-height);
+            padding: 0 20px;
+            margin-top: var(--input-spacing) + 10px;
+            border: none;
+            border-radius: var(--button-border-radius);
+            background: linear-gradient(90deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: var(--button-text-white);
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 8px 20px var(--shadow-button);
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(90deg, #00ddb0, #008a6b);
+            box-shadow: 0 10px 25px rgba(0, 200, 150, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px var(--shadow-button);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 400px) {
+            .signup-card {
+                padding: 25px 20px;
+                border-radius: 15px;
+            }
+            .logo-section h1 {
+                font-size: 1.6em;
+            }
+            .form-field input {
+                height: 45px;
+                font-size: 0.95em;
+            }
+            .submit-button {
+                height: 50px;
+                font-size: 1em;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signup-card">
+        <div class="logo-section">
+            <!--  STREAM logo -->
+            <img src="/stream logo green.png" alt="STREAM Logo">
+        </div>
+        
+        <form class="signup-form" action="/dashboard.html" method="POST">
+            <div class="form-field">
+                <input type="text" name="full_name" placeholder="Full Name" required>
+            </div>
+            <div class="form-field">
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-field">
+                <input type="text" name="username" placeholder="Choose Username" required>
+            </div>
+            <div class="form-field">
+                <input type="password" name="password" placeholder="Create Password" required>
+            </div>
+            <div class="form-field">
+                <input type="text" name="country" placeholder="Country of Residence" required>
+            </div>
+            
+            <button type="submit" class="submit-button">Create My Stream Account</button>
+
+        </form>
+    </div>
+
+    <script>
+      document.querySelector(".submit-button").addEventListener("click", function (e) {
+        e.preventDefault(); // stop form submission
+        window.location.href = "dashboard.html";
+      });
+    </script>
+</body>
+</html>
